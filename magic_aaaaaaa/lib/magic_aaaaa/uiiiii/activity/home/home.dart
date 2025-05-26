@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/routers_name_a.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/coins_viewwwww.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/set_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/click_widget.dart';
@@ -22,7 +25,12 @@ class HomeActivity extends MagicRootActivity<HomeController>{
       _topWidget(),
       Expanded(
         child: Center(
-          child: _levelWidget(),
+          child: ClickWidget(
+            onTap: (){
+              magicRootController.clickTest();
+            },
+            child: _levelWidget(),
+          ),
         ),
       ),
       _btnWidget(),
@@ -30,26 +38,59 @@ class HomeActivity extends MagicRootActivity<HomeController>{
     ],
   );
 
-  _levelWidget()=>Stack(
-    children: [
-      AspectRatio(
-        aspectRatio: 1,
-        child: MagicImageViewwwww(name: "home2"),
-      ).marginOnly(left: 24.w,right: 24.w)
-    ],
-  );
+  _levelWidget()=>AspectRatio(
+    aspectRatio: 1,
+    child: Stack(
+      children: [
+        MagicImageViewwwww(name: "home2"),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 88.w,
+                height: 34.h,
+                child: Stack(
+                  children: [
+                    MagicImageViewwwww(name: "home3",width: 88.w,height: 34.h,),
+                    Positioned(
+                      right: 7.w,
+                      bottom: 4.h,
+                      child: MagicTextViewwwww(
+                        text: "${UserInfoHep.instance.getCurrentLevelNum()}/50",
+                        size: 14.sp,
+                        color: "#6CFFF8",
+                        shadowsColor: "#000000",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              MagicTextViewwwww(text: "${UserInfoHep.instance.getCurrentLevelNum()}", size: 35.sp, color: "#FFFFFF",shadowsColor: "#DC384B",)
+            ],
+          ).marginOnly(top: 89.h),
+        )
+      ],
+    ),
+  ).marginOnly(left: 24.w,right: 24.w);
 
-  _btnWidget()=>Stack(
-    alignment: Alignment.center,
-    children: [
-      MagicImageViewwwww(name: "btn2",width: 214.w,height: 87.h,),
-      MagicGraTextViewwwwww(
-        text: "Start",
-        size: 36.sp,
-        colors: ["#F5FDEB".toColor(),"#F4E4BD".toColor()],
-        shadowsColor: "#3A6B10",
-      ),
-    ],
+  _btnWidget()=>ClickWidget(
+    onTap: (){
+      magicRootController.clickStart();
+    },
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        MagicImageViewwwww(name: "btn2",width: 214.w,height: 87.h,),
+        MagicGraTextViewwwwww(
+          text: "Start",
+          size: 36.sp,
+          colors: ["#F5FDEB".toColor(),"#F4E4BD".toColor()],
+          shadowsColor: "#3A6B10",
+        ),
+      ],
+    ),
   );
 
   _topWidget()=>Row(
@@ -66,4 +107,16 @@ class HomeActivity extends MagicRootActivity<HomeController>{
 
 class HomeController extends MagicRootController{
 
+  clickStart(){
+    Get.toNamed(RoutersNameA.play1_10);
+  }
+
+  var level = 0;
+  clickTest(){
+    if(!kDebugMode){
+      return;
+    }
+    level++;
+    print("==${level}====${level-(level~/50)*50}");
+  }
 }

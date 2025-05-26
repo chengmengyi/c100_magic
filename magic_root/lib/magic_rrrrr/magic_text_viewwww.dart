@@ -52,6 +52,6 @@ class MagicTextViewwwww extends StatelessWidget{
             width: 2.w,
         ),
       ],
-    ).paddingOnly(top: showFontFamily==true?5.h:0);
+    );
   }
 }

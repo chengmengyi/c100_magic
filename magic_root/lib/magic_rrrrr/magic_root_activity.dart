@@ -9,7 +9,7 @@ abstract class MagicRootActivity<K extends MagicRootController> extends Stateles
 
   @override
   Widget build(BuildContext context) {
-    _checkFirstLoad();
+    _checkFirstLoad(context);
     return _rootWidget();
   }
 
@@ -30,9 +30,10 @@ abstract class MagicRootActivity<K extends MagicRootController> extends Stateles
     ),
   );
 
-  _checkFirstLoad(){
+  _checkFirstLoad(BuildContext context){
     if(_firstLoad){
       magicRootController=Get.put(createMagicRootController());
+      magicRootController.context=context;
       _firstLoad=false;
     }
   }

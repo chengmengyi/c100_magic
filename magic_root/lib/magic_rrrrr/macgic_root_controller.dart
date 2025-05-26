@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'event_busssssss.dart';
 
 class MagicRootController extends GetxController{
+  late BuildContext context;
   StreamSubscription<MagicEventttttt>? _s;
 
   @override
