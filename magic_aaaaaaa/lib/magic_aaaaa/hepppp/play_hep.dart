@@ -1,7 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/bean/card_bean.dart';
+import 'package:magic_aaaaaaa/bean/point_card_bean.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/longjuanfeng_dialog.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/play_fail_dialog.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/win_dialog.dart';
 import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 
@@ -41,10 +45,15 @@ final Map<String, int> cardValue = {
 
 class PlayHep{
   final List<List<CardBean>> cardList=[];
-
+  //    是否可点击          手牌数量
+  var canClick=false,handCardNum=17,hasWanNengCard=false;
+  GlobalKey? _pointCardGlobalKey;
   //当前指示牌
-  String currentPointCard="";
-  var canClick=false;
+  PointCardBean? currentPointCard;
+
+  addHandsCardNum(int addNum){
+    handCardNum+=addNum;
+  }
 
   setCardList({
     required List<List<CardBean>> list,
@@ -52,29 +61,212 @@ class PlayHep{
   }){
     cardList.clear();
     cardList.addAll(list);
-    _initTopCardNums();
+    _initCardNums(cardList.expand((row) => row).where((c) => c.isTop).toList());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _checkAllCoveredWidgetsAccurate();
       checkCoverCall.call();
-      List<int> topIndexList = cardList
-          .expand((row) => row)
-          .where((card) => card.isTop)
-          .map((card) => card.index)
-          .toList();
-      MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startFlipAnimator,dynamicValue: topIndexList);
-      _setPointCard();
+      _sendFlipTopCardMsg();
+      setPointCard();
     });
   }
 
-  clickCardItem(CardBean bean){
-    if(!canClick||bean.isCovered||bean.cardNum.isEmpty){
+  useLongJuanFeng({
+    required Function() refreshList,
+    required Function() resetPlay,
+})async{
+    for (var value in cardList) {
+      for (var value1 in value) {
+        if(!value1.isCovered&&value1.show&&value1.cardNum.isNotEmpty){
+          value1.show=false;
+        }
+      }
+    }
+    refreshList.call();
+    await Future.delayed(Duration(milliseconds: 500));
+    _checkAllCoveredWidgetsAccurate();
+    _initCardNums(cardList.expand((row) => row).where((card) => card.show&&!card.isCovered).toList());
+    _sendFlipTopCardMsg();
+    if(!_checkCardNotEmpty()){
+      if(handCardNum>0){
+        var timer = handCardNum*400;
+        MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startCountHandCards);
+        await Future.delayed(Duration(milliseconds: timer));
+        _showWindDialog(resetPlay);
+      }else{
+        _showWindDialog(resetPlay);
+      }
+    }
+  }
+
+  clickCardItem({
+    required CardBean bean,
+    required Function() refreshList,
+    required Function() resetPlay,
+  })async{
+    if(!canClick||bean.isCovered||bean.cardNum.isEmpty||null==_pointCardGlobalKey||!bean.show){
       return;
     }
-    var twoCardsDiff1 = _checkTwoCardsDiff1(currentPointCard,bean.cardNum);
-    if(!twoCardsDiff1){
+    if(hasWanNengCard){
+      hasWanNengCard=false;
+      _clickResult(bean,refreshList,resetPlay);
       return;
+    }
+    if(_checkFail()){
+      Get.dialog(
+        PlayFailDialog(
+          replayCallback: (){
+            _resetPlay(resetPlay);
+          },
+          homeCallback: (){
+            Get.back();
+          },
+        ),
+        barrierDismissible: false,
+      );
+      return;
+    }
+    var twoCardsDiff1 = _checkTwoCardsDiff1(currentPointCard?.cardNum??"",bean.cardNum);
+    if(!twoCardsDiff1){
+      showToast("Your current hand is ${currentPointCard?.cardNum}, you can only eliminate ${_getCardLastAndNext(currentPointCard?.cardNum??"")}");
+      return;
+    }
+    _clickResult(bean,refreshList,resetPlay);
+  }
+
+  _clickResult(CardBean bean, Function() refreshList, Function() resetPlay)async{
+    canClick=false;
+    var cardRenderBox = bean.globalKey.currentContext!.findRenderObject() as RenderBox;
+    var cardOffset = cardRenderBox.localToGlobal(Offset.zero);
+    var pointRenderBox = _pointCardGlobalKey!.currentContext!.findRenderObject() as RenderBox;
+    var pointOffset = pointRenderBox.localToGlobal(Offset.zero);
+    MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startCardMoveAnimator,dynamicValue: {"cardOffset":cardOffset,"pointOffset":pointOffset,"bean":bean});
+    bean.show=false;
+    refreshList.call();
+    await Future.delayed(Duration(milliseconds: 300));
+    if(_checkCardNotEmpty()){
+      UserInfoHep.instance.updateCoinsNum(100);
+      currentPointCard=PointCardBean(cardNum: bean.cardNum, cardType: bean.cardType);
+      MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.endCardMoveAnimator);
+      _checkAllCoveredWidgetsAccurate();
+      _checkNewBackCard(bean);
+      refreshList.call();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _sendFlipTopCardMsg();
+      });
+      canClick=true;
+    }else{
+      if(handCardNum>0){
+        var timer = handCardNum*400;
+        MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startCountHandCards);
+        await Future.delayed(Duration(milliseconds: timer));
+        _showWindDialog(resetPlay);
+      }else{
+        _showWindDialog(resetPlay);
+      }
+    }
+  }
+
+  _showWindDialog(Function() resetPlay){
+    Get.dialog(
+      WinDialog(
+        homeCallback: (){
+          Get.back();
+        },
+        nextCallback: (){
+          _nextPlay(resetPlay);
+        },
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  _nextPlay(Function() resetPlay){
+    var updateLevel = UserInfoHep.instance.updateLevel();
+    if(updateLevel.isEmpty){
+      _resetPlay(resetPlay);
+    }else{
+      Get.offNamed(updateLevel);
+    }
+  }
+
+  _resetPlay(Function() resetPlay){
+    cardList.clear();
+    canClick=true;
+    handCardNum=17;
+    currentPointCard=null;
+    MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.resetBottom);
+    resetPlay.call();
+  }
+
+  bool _checkCardNotEmpty(){
+    for (var value in cardList) {
+      for (var value1 in value) {
+        if(value1.show){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  _checkNewBackCard(CardBean bean){
+    var list = cardList.expand((row) => row).where((card)=>!card.isCovered&&card.cardNum.isEmpty).toList();
+    final closeNums = _getCardNumsWithDiff1(bean.cardNum);
+    final farNums = cardFaces.where((n) => !closeNums.contains(n)).toList();
+    final rand = Random();
+
+    for (final bean in list) {
+      if (_getDownAndTopCardProbability()) {
+        bean.cardNum = closeNums[rand.nextInt(closeNums.length)];
+      } else {
+        bean.cardNum = farNums[rand.nextInt(farNums.length)];
+      }
+    }
+  }
+
+  updateHandCardNum(int addNum){
+    handCardNum+=addNum;
+  }
+
+  List<String> _getCardNumsWithDiff1(String target) {
+    final Map<String, List<int>> cardValueMap = {
+      'A': [1, 14],
+      '2': [2],
+      '3': [3],
+      '4': [4],
+      '5': [5],
+      '6': [6],
+      '7': [7],
+      '8': [8],
+      '9': [9],
+      '10': [10],
+      'J': [11],
+      'Q': [12],
+      'K': [13],
+    };
+    final targetValues = cardValueMap[target] ?? [];
+    final result = <String>{};
+
+    for (final entry in cardValueMap.entries) {
+      final valueList = entry.value;
+      for (final val in valueList) {
+        for (final t in targetValues) {
+          if ((val - t).abs() == 1) {
+            result.add(entry.key);
+          }
+        }
+      }
     }
 
+    return result.toList();
+  }
+
+  _sendFlipTopCardMsg(){
+    var topList = cardList
+        .expand((row) => row)
+        .where((card) => !card.isCovered&&card.cardNum.isNotEmpty)
+        .toList();
+    MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startFlipAnimator,dynamicValue: topList);
   }
 
   bool _checkTwoCardsDiff1(String card1, String card2){
@@ -105,7 +297,7 @@ class PlayHep{
   }
 
   //设置指示牌
-  _setPointCard(){
+  setPointCard(){
     final noCoveredList = cardList.expand((row) => row).where((c) => !c.isCovered&&c.show&&c.cardNum.isNotEmpty).toList();
     if(noCoveredList.isEmpty){
       return;
@@ -138,17 +330,16 @@ class PlayHep{
     }
 
     final chosen = targetValues.toList()[random.nextInt(targetValues.length)];
-    currentPointCard = valueToCardNum(chosen);
+    currentPointCard = PointCardBean(cardNum: valueToCardNum(chosen), cardType: cardTypeList.random());
     MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.updatePointCard,);
   }
 
-  _initTopCardNums() {
-    final topCards = cardList.expand((row) => row).where((c) => c.isTop).toList();
+  _initCardNums(List<CardBean> topCards) {
     if (topCards.isEmpty) return;
 
-    final Random _rand = Random();
+    final Random rand = Random();
     // 第一个：完全随机
-    topCards[0].cardNum = cardFaces[_rand.nextInt(cardFaces.length)];
+    topCards[0].cardNum = cardFaces[rand.nextInt(cardFaces.length)];
     for (int i = 1; i < topCards.length; i++) {
       final prev = topCards[i - 1];
       final curr = topCards[i];
@@ -186,7 +377,7 @@ class PlayHep{
 
       // 去除无效项
       candidates = candidates.toSet().where((v) => v >= 1 && v <= 14).toList();
-      final chosenVal = candidates[_rand.nextInt(candidates.length)];
+      final chosenVal = candidates[rand.nextInt(candidates.length)];
       curr.cardNum = valueToCardNum(chosenVal);
     }
   }
@@ -208,9 +399,6 @@ class PlayHep{
         );
 
         bean.isCovered=isCovered;
-        if(bean.isTop){
-
-        }
       }
     }
   }
@@ -255,7 +443,11 @@ class PlayHep{
     if (myIndex == -1) return false;
 
     for (int i = myIndex + 1; i < keysInZOrder.length; i++) {
-      final otherCorners = _getTransformedCorners(keysInZOrder[i].globalKey);
+      var otherBean = keysInZOrder[i];
+      if (!otherBean.show) {
+        continue;
+      }
+      final otherCorners = _getTransformedCorners(otherBean.globalKey);
       if (otherCorners.isEmpty) continue;
 
       final otherRect = _boundingRect(otherCorners);
@@ -265,6 +457,44 @@ class PlayHep{
     }
     return false;
   }
+
+  bool _checkFail(){
+    if(handCardNum>0){
+      return false;
+    }
+    List<CardBean> list=[];
+    for (var value in cardList) {
+      for (var value1 in value) {
+        if(!value1.isCovered&&value1.show&&value1.cardNum!="-1"){
+          list.add(value1);
+        }
+      }
+    }
+
+    for (var value2 in list) {
+      var twoCardsDiff1 = _checkTwoCardsDiff1(currentPointCard?.cardNum??"",value2.cardNum);
+      if(twoCardsDiff1){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  String _getCardLastAndNext(String card){
+    // ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    var indexWhere = cardFaces.indexWhere((element) => element==card);
+    if(indexWhere<0){
+      return "";
+    }
+    if(indexWhere==0){
+      return "2 or K";
+    }
+    if(indexWhere==cardFaces.length-1){
+      return "Q or A";
+    }
+    return "${cardFaces[indexWhere-1]} or ${cardFaces[indexWhere+1]}";
+  }
+
 
   //获取顶部卡牌的概率
   bool _getTopProbability(){
@@ -298,5 +528,26 @@ class PlayHep{
       return Random().nextInt(100)<30;
     }
     return Random().nextInt(100)<30;
+  }
+
+  //获取下层与上层卡牌的概率
+  bool _getDownAndTopCardProbability(){
+    var currentLevelNum = UserInfoHep.instance.getCurrentLevelNum();
+    if(currentLevelNum<=10){
+      return Random().nextInt(100)<65;
+    }else if(currentLevelNum<=20){
+      return Random().nextInt(100)<60;
+    }else if(currentLevelNum<=30){
+      return Random().nextInt(100)<50;
+    }else if(currentLevelNum<=40){
+      return Random().nextInt(100)<40;
+    }else if(currentLevelNum<=50){
+      return Random().nextInt(100)<40;
+    }
+    return Random().nextInt(100)<30;
+  }
+
+  setPointCardGlobalKey(GlobalKey key){
+    _pointCardGlobalKey=key;
   }
 }

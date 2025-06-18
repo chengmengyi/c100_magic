@@ -20,22 +20,26 @@ class HomeActivity extends MagicRootActivity<HomeController>{
   HomeController createMagicRootController() => HomeController();
 
   @override
-  Widget createActivityContentWidget() => Column(
-    children: [
-      _topWidget(),
-      Expanded(
-        child: Center(
-          child: ClickWidget(
-            onTap: (){
-              magicRootController.clickTest();
-            },
-            child: _levelWidget(),
+  Widget createActivityContentWidget() => SafeArea(
+    top: true,
+    bottom: false,
+    child: Column(
+      children: [
+        _topWidget(),
+        Expanded(
+          child: Center(
+            child: ClickWidget(
+              onTap: (){
+                magicRootController.clickTest();
+              },
+              child: _levelWidget(),
+            ),
           ),
         ),
-      ),
-      _btnWidget(),
-      SizedBox(height: 50.h,),
-    ],
+        _btnWidget(),
+        SizedBox(height: 50.h,),
+      ],
+    ),
   );
 
   _levelWidget()=>AspectRatio(
@@ -111,12 +115,10 @@ class HomeController extends MagicRootController{
     Get.toNamed(RoutersNameA.play1_10);
   }
 
-  var level = 0;
   clickTest(){
     if(!kDebugMode){
       return;
     }
-    level++;
-    print("==${level}====${level-(level~/50)*50}");
+    UserInfoHep.instance.updateCoinsNum(5000);
   }
 }

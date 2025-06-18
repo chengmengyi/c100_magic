@@ -21,8 +21,7 @@ class CardItemViewwww extends MagicRootStatefulWidget{
 
 class _CardItemViewwwwState extends MagicRootStatefulState<CardItemViewwww> with SingleTickerProviderStateMixin{
   late AnimationController _controller;
-  bool _isFront = false;
-  String randomCardType=cardTypeList.random();
+  var _front=false;
 
   @override
   void initState() {
@@ -35,28 +34,33 @@ class _CardItemViewwwwState extends MagicRootStatefulState<CardItemViewwww> with
   }
 
   @override
-  Widget createMagicStatefulWidget() => AnimatedBuilder(
-    animation: _controller,
-    builder: (context, child) {
-      double angle = _controller.value * pi;
-      bool isBack = angle > pi / 2;
-      return Transform(
-        transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.001)
-          ..rotateY(angle),
-        alignment: Alignment.center,
-        child: isBack ?
-        Transform(
+  Widget createMagicStatefulWidget() {
+    if(!widget.cardBean.show){
+      return SizedBox(width: 49.w,height: 73.h);
+    }
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        double angle = _controller.value * pi;
+        bool isBack = angle > pi / 2;
+        return Transform(
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001)
+            ..rotateY(angle),
           alignment: Alignment.center,
-          transform: Matrix4.rotationY(pi),
-          child: _buildBackWidget(),
-        ) :
-        _buildFrontWidget(),
-      );
-    },
-  );
+          child: isBack ?
+          Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(pi),
+            child: _buildBackWidget(),
+          ) :
+          _buildFrontWidget(),
+        );
+      },
+    );
+  }
 
-  _buildFrontWidget() => MagicImageViewwwww(name: getCardIcon(card: widget.cardBean.cardNum,cardType: randomCardType),width: 49.w,height: 73.h,);
+  _buildFrontWidget() => MagicImageViewwwww(name: getCardIcon(card: widget.cardBean.cardNum,cardType: widget.cardBean.cardType),width: 49.w,height: 73.h,);
 
   _buildBackWidget() => MagicImageViewwwww(name: "card_bg",width: 49.w,height: 73.h,);
 
@@ -67,21 +71,20 @@ class _CardItemViewwwwState extends MagicRootStatefulState<CardItemViewwww> with
   handleMagicEventtttttt(MagicEventttttt tttt) {
     switch(tttt.eventCodeeeeee){
       case MagicCodeAAAAA.startFlipAnimator:
-        _startFlipAnimator(tttt.dynamicValue as List<int>);
+        _startFlipAnimator(tttt.dynamicValue as List<CardBean>);
         break;
     }
   }
 
-  _startFlipAnimator(List<int> list){
-    if(!list.contains(widget.cardBean.index)){
+  _startFlipAnimator(List<CardBean> list){
+    var indexWhere = list.indexWhere((value)=>value.index==widget.cardBean.index);
+    if(indexWhere<0){
       return;
     }
-    if (_isFront) {
-      _controller.forward();
-    } else {
+    if(!_front){
       _controller.reverse();
     }
-    _isFront = !_isFront;
+    _front=true;
   }
 
   @override

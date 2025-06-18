@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/bean/card_bean.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/play_hep.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/card_item_viewwww.dart';
-import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/coins_viewwwww.dart';
-import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/play_bottom_viewwwww.dart';
-import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/play_level_viewwwww.dart';
-import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/set_viewwww.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/play_base_widget.dart';
 import 'package:magic_root/magic_rrrrr/click_widget.dart';
+import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
@@ -22,16 +18,9 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
   Play1_10Controller createMagicRootController() => Play1_10Controller();
 
   @override
-  Widget createActivityContentWidget() => Column(
-    children: [
-      _topWidget(),
-      Expanded(
-        child: Center(
-          child: _listWidget(),
-        ),
-      ),
-      PlayBottomViewwwww(playHep: magicRootController.playHep,),
-    ],
+  Widget createActivityContentWidget() => PlayBaseWidget(
+    playHep: magicRootController.playHep,
+    child: _listWidget(),
   );
 
   _listWidget()=> GetBuilder<Play1_10Controller>(
@@ -104,25 +93,10 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
       child: CardItemViewwww(cardBean: bean,),
     ),
   );
-
-  _topWidget()=>Stack(
-    children: [
-      PlayLevelViewwwww().marginOnly(top: 10.h),
-      Row(
-        children: [
-          SizedBox(width: 16.w,),
-          CoinsViewwww(),
-          Spacer(),
-          SetViewww(),
-          SizedBox(width: 16.w,),
-        ],
-      )
-    ],
-  );
 }
 
-class Play1_10Controller extends MagicRootController{
-  PlayHep playHep=PlayHep();
+class Play1_10Controller extends MagicRootController {
+  PlayHep playHep = PlayHep();
 
   @override
   void onReady() {
@@ -130,36 +104,75 @@ class Play1_10Controller extends MagicRootController{
     _initList();
   }
 
-  _initList(){
-    List<List<CardBean>> cardList=[];
-    var index=0;
-    while(cardList.length<2){
-      if(cardList.isEmpty){
-        List<CardBean> list=[];
-        while(list.length<10){
-          list.add(CardBean(index: index, cardNum: "", globalKey: GlobalKey(),isTop: false,isCovered: true,show: true));
+  _initList() {
+    List<List<CardBean>> cardList = [];
+    var index = 0;
+    while (cardList.length < 2) {
+      if (cardList.isEmpty) {
+        List<CardBean> list = [];
+        while (list.length < 10) {
+          list.add(CardBean(index: index,
+              cardNum: "",
+              globalKey: GlobalKey(),
+              isTop: false,
+              isCovered: true,
+              show: true,
+              cardType: cardTypeList.random()));
           index++;
         }
         cardList.add(list);
-      }else if(cardList.length==1){
-        List<CardBean> list=[];
-        while(list.length<3){
-          list.add(CardBean(index: index, cardNum: "", globalKey: GlobalKey(),isTop: true,isCovered: true,show: true));
+      } else if (cardList.length == 1) {
+        List<CardBean> list = [];
+        while (list.length < 3) {
+          list.add(CardBean(index: index,
+              cardNum: "",
+              globalKey: GlobalKey(),
+              isTop: true,
+              isCovered: true,
+              show: true,
+              cardType: cardTypeList.random()));
           index++;
         }
         cardList.add(list);
       }
     }
     playHep.setCardList(
-      list: cardList,
-      checkCoverCall: (){
-        update(["list"]);
-      }
+        list: cardList,
+        checkCoverCall: () {
+          update(["list"]);
+        }
     );
     update(["list"]);
   }
 
-  clickItem(CardBean bean){
-    playHep.clickCardItem(bean);
+  clickItem(CardBean bean) {
+    playHep.clickCardItem(
+      bean: bean,
+      refreshList: () {
+        update(["list"]);
+      },
+      resetPlay: () {
+        _initList();
+      },
+    );
+  }
+
+  @override
+  bool loadMagicEventtttt() => true;
+
+  @override
+  handleMagicEventtttttt(MagicEventttttt tttt) {
+    switch (tttt.eventCodeeeeee) {
+      case MagicCodeAAAAA.startLongjuanfengAnimator:
+        playHep.useLongJuanFeng(
+          refreshList: (){
+            update(["list"]);
+          },
+          resetPlay: () {
+            _initList();
+          },
+        );
+        break;
+    }
   }
 }

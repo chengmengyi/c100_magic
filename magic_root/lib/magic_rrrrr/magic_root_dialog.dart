@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 
-abstract class MagicRootActivity<K extends MagicRootController> extends StatelessWidget{
+abstract class MagicRootDialog<K extends MagicRootController> extends StatelessWidget{
   late K magicRootController;
   var _firstLoad=true;
 
@@ -10,21 +10,18 @@ abstract class MagicRootActivity<K extends MagicRootController> extends Stateles
   @override
   Widget build(BuildContext context) {
     _checkFirstLoad(context);
-    return _rootWidget();
-  }
-
-  Widget _rootWidget()=>Scaffold(
-    body: Stack(
-      children: [
-        createActivityBgWidget(),
-        SizedBox(
-          width: double.infinity,
-          height: double.infinity,
+    return WillPopScope(
+      child: Material(
+        type: MaterialType.transparency,
+        child: Center(
           child: createActivityContentWidget(),
         ),
-      ],
-    ),
-  );
+      ),
+      onWillPop: ()async{
+        return false;
+      },
+    );
+  }
 
   _checkFirstLoad(BuildContext context){
     if(_firstLoad){
@@ -35,8 +32,6 @@ abstract class MagicRootActivity<K extends MagicRootController> extends Stateles
   }
 
   K createMagicRootController();
-
-  Widget createActivityBgWidget();
 
   Widget createActivityContentWidget();
 }

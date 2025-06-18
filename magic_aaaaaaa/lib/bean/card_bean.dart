@@ -6,6 +6,7 @@ class CardBean{
   bool isTop;
   bool isCovered;
   bool show;
+  String cardType;
   GlobalKey globalKey;
 
   CardBean({
@@ -14,6 +15,7 @@ class CardBean{
     required this.isTop,
     required this.isCovered,
     required this.show,
+    required this.cardType,
     required this.globalKey,
   });
 

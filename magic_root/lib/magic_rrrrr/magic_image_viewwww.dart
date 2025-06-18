@@ -4,10 +4,13 @@ class MagicImageViewwwww extends StatelessWidget{
   String name;
   double? width;
   double? height;
+  BoxFit? fit;
+
   MagicImageViewwwww({
     required this.name,
     this.width,
     this.height,
+    this.fit,
 });
 
   @override
@@ -15,6 +18,6 @@ class MagicImageViewwwww extends StatelessWidget{
     "magic_assets/webp/$name.webp",
     width: width,
     height: height,
-    fit: BoxFit.fill,
+    fit: fit??BoxFit.fill,
   );
 }
