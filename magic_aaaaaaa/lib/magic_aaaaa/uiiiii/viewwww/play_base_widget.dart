@@ -48,7 +48,7 @@ class PlayBaseWidget extends StatelessWidget{
           SizedBox(width: 16.w,),
           CoinsViewwww(),
           Spacer(),
-          SetViewww(),
+          SetViewww(isHome: false,),
           SizedBox(width: 16.w,),
         ],
       )

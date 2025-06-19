@@ -1,0 +1,13 @@
+
+const privacyUrl="https://magicpeaksolitaire.com/privacy/";
+const maxAdKeyBase64="TVdKemhuRVB0S3F4TEtSTEFsVnJUeVFmTzJWeFdaV3RWeF9TelRXQ19NZ29aTDdrVEtOdDl0M01fT2dJWjI0bkJYUlh4VmQ5b2dRRXA3NjE2VFdmM0M=";
+const localAdStrBase64="ewogICJ3YnByeWpyZiI6IDEwMCwKICAiZ2VseHV3ZGciOiAxMDAsCiAgInZ2c2x0X2Fydl9vbmUiOiBbCiAgICB7CiAgICAgICJpZGlyZ2t5ZCI6ICI3NWNmYWVlNDA0MjQ4ZDYzIiwKICAgICAgImx1cnd5bWVxIjogIm1heCIsCiAgICAgICJlaHBkaWNpbSI6ICJyZXdhcmQiLAogICAgICAiZ3V4eGtscmciOiAzMDAwLAogICAgICAibHVnYmZkYXAiOiAzCiAgICB9CiAgXQp9";
+
+
+
+
+
+
+
+
+

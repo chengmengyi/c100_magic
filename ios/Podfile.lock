@@ -5,6 +5,7 @@ PODS:
   - AppLovinSDK (13.2.0)
   - audioplayers_darwin (0.0.1):
     - Flutter
+    - FlutterMacOS
   - Flutter (1.0.0)
   - flutter_ad_ios_plugins (0.0.1):
     - Flutter
@@ -30,7 +31,7 @@ PODS:
 
 DEPENDENCIES:
   - applovin_max (from `.symlinks/plugins/applovin_max/ios`)
-  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/darwin`)
   - Flutter (from `Flutter`)
   - flutter_ad_ios_plugins (from `.symlinks/plugins/flutter_ad_ios_plugins/ios`)
   - flutter_app_lifecycle (from `.symlinks/plugins/flutter_app_lifecycle/ios`)
@@ -50,7 +51,7 @@ EXTERNAL SOURCES:
   applovin_max:
     :path: ".symlinks/plugins/applovin_max/ios"
   audioplayers_darwin:
-    :path: ".symlinks/plugins/audioplayers_darwin/ios"
+    :path: ".symlinks/plugins/audioplayers_darwin/darwin"
   Flutter:
     :path: Flutter
   flutter_ad_ios_plugins:
@@ -75,7 +76,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   applovin_max: e2274945d7095e662f8e1657ff9cdde6e24df454
   AppLovinSDK: 1eb88a82b4feea9f3696ce9cc1e3343c4997ee12
-  audioplayers_darwin: ccf9c770ee768abb07e26d90af093f7bab1c12ab
+  audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_ad_ios_plugins: 39f145153e9fe06753e9b28fb7b43925ae399a71
   flutter_app_lifecycle: 96f63b433a79e643add0fd0a58eabf1a0877e176

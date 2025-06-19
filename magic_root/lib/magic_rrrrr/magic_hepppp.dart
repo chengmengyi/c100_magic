@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ export 'package:get/get.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:flutter_ad_ios_plugins/data/storage_data.dart';
 export 'package:webview_flutter/webview_flutter.dart';
+export 'package:flutter_ad_ios_plugins/hep/ad_type.dart';
+export 'package:shake_animation_widget/shake_animation_widget.dart';
 
 extension String2Color on String{
   Color toColor(){
@@ -17,6 +20,9 @@ extension String2Color on String{
   }
 }
 
+extension StringBase64 on String{
+  String base64()=>const Utf8Decoder().convert(base64Decode(this));
+}
 
 showToast(String text) {
   if (text.isEmpty) {

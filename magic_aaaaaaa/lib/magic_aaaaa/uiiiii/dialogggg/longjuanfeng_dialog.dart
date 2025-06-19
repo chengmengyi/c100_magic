@@ -3,13 +3,11 @@ import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/storage_a.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
 import 'package:magic_root/magic_ad/ad_utils.dart';
 import 'package:magic_root/magic_rrrrr/click_widget.dart';
-import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_dialog.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
-import 'package:magic_root/magic_uuu/uuuuuu.dart';
 
 class LongjuanfengDialog extends MagicRootDialog<LongJuanFengDialogController>{
   Function() hasLongjuanfengCallback;

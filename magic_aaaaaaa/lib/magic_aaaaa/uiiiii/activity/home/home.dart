@@ -102,7 +102,7 @@ class HomeActivity extends MagicRootActivity<HomeController>{
       SizedBox(width: 14.w,),
       CoinsViewwww(),
       Spacer(),
-      SetViewww(),
+      SetViewww(isHome: true,),
       SizedBox(width: 14.w,),
     ],
   );

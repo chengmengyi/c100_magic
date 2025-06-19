@@ -9,7 +9,6 @@ import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_dialog.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
-import 'package:magic_root/magic_uuu/uuuuuu.dart';
 
 class WanNengDialog extends MagicRootDialog<WanNengDialogController>{
 
