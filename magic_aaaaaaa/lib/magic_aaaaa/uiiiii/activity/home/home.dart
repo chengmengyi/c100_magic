@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/routers_name_a.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/storage_a.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/coins_viewwwww.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/set_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/click_widget.dart';
+import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 import 'package:magic_root/magic_rrrrr/magic_gra_text_viewwwwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_activity.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
+import 'package:magic_root/magic_uuu/music_utils.dart';
 
 class HomeActivity extends MagicRootActivity<HomeController>{
   @override
@@ -71,7 +74,10 @@ class HomeActivity extends MagicRootActivity<HomeController>{
                   ],
                 ),
               ),
-              MagicTextViewwwww(text: "${UserInfoHep.instance.getCurrentLevelNum()}", size: 35.sp, color: "#FFFFFF",shadowsColor: "#DC384B",)
+              GetBuilder<HomeController>(
+                id: "level",
+                builder: (_)=>MagicTextViewwwww(text: "${UserInfoHep.instance.getCurrentLevelNum()}", size: 35.sp, color: "#FFFFFF",shadowsColor: "#DC384B",),
+              )
             ],
           ).marginOnly(top: 89.h),
         )
@@ -110,15 +116,46 @@ class HomeActivity extends MagicRootActivity<HomeController>{
 }
 
 class HomeController extends MagicRootController{
+  @override
+  void onInit() {
+    super.onInit();
+    MusicUtils.instance.playBgMp3();
+  }
 
   clickStart(){
-    Get.toNamed(RoutersNameA.play1_10);
+    var routerName = _getRouterNameByLevel();
+    if(routerName.isNotEmpty){
+      Get.toNamed(routerName);
+    }
+  }
+
+  String _getRouterNameByLevel(){
+    var i = (aLevelNum.getData()-1)%20+1;
+    if(i<=10){
+      return RoutersNameA.play1_10;
+    }else if(i<=20){
+      return RoutersNameA.play11_20;
+    }
+    return "";
+  }
+
+  @override
+  bool loadMagicEventtttt() => true;
+
+  @override
+  handleMagicEventtttttt(MagicEventttttt tttt) {
+    switch(tttt.eventCodeeeeee){
+      case MagicCodeAAAAA.updateLevel:
+        update(["level"]);
+        break;
+    }
   }
 
   clickTest(){
     if(!kDebugMode){
       return;
     }
-    UserInfoHep.instance.updateCoinsNum(5000);
+    var updateLevel = UserInfoHep.instance.updateLevel();
   }
+
 }

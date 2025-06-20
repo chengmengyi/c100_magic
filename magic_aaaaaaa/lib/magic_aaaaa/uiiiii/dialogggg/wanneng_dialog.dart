@@ -7,6 +7,7 @@ import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
+import 'package:magic_root/magic_rrrrr/magic_lottie_widget.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_dialog.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
 
@@ -21,7 +22,13 @@ class WanNengDialog extends MagicRootDialog<WanNengDialogController>{
     children: [
       MagicImageViewwwww(name: "wanneng1",height: 56.h,fit: BoxFit.fitHeight,),
       SizedBox(height: 30.h,),
-      MagicImageViewwwww(name: "wanneng2",width: 142.w,height: 142.w,),
+      Stack(
+        alignment: Alignment.center,
+        children: [
+          MagicLottieWidget(name: "tanchuang",width: 220.w,height: 220.w,),
+          MagicImageViewwwww(name: "wanneng2",width: 142.w,height: 142.w,),
+        ],
+      ),
       SizedBox(height: 50.h,),
       ClickWidget(
         onTap: (){

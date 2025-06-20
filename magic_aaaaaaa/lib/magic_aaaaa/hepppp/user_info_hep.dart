@@ -12,7 +12,10 @@ class UserInfoHep{
         return;
       }
       aCoinsNum.saveData(aCoinsNum.getData()+addNum);
-      MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.updateCoins);
+      MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.updateCoins,intValue: addNum);
+      if(addNum>0){
+        MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.showCoinsLottie);
+      }
     }
   }
 
@@ -36,15 +39,14 @@ class UserInfoHep{
     }
   }
 
-
   String _getRouterNameByLevel(int nextLevel){
     var i = nextLevel%20;
     if(i<=10){
       return RoutersNameA.play1_10;
     }
-    // else if(i<=20){
-    //   return P3RoutersName.p3Level20;
-    // }
+    else if(i<=20){
+      return RoutersNameA.play11_20;
+    }
     return "";
   }
 }

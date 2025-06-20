@@ -65,6 +65,8 @@ flutter:
   assets:
     - magic_assets/webp/
     - magic_assets/tff/
+    - magic_assets/lottie/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

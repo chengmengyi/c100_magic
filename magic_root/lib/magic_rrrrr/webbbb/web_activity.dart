@@ -3,8 +3,8 @@ import 'package:magic_root/magic_rrrrr/click_widget.dart';
 import 'package:magic_root/magic_rrrrr/macgic_root_controller.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
-import 'package:magic_root/magic_rrrrr/magic_local_infooooo.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_activity.dart';
+import 'package:magic_root/magic_uuu/local_config.dart';
 
 class WebActivity extends MagicRootActivity<WebController>{
   @override
@@ -44,6 +44,6 @@ class WebController extends MagicRootController{
   @override
   void onInit() {
     super.onInit();
-    webViewwwwww=WebViewController()..loadRequest(Uri.parse(MagicLocalInfooooo.privacy));
+    webViewwwwww=WebViewController()..loadRequest(Uri.parse(privacyUrl));
   }
 }

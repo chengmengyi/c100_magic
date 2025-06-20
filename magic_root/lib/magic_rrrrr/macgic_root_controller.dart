@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'event_busssssss.dart';
 
 class MagicRootController extends GetxController{
+  bool closePage=false;
   late BuildContext context;
   StreamSubscription<MagicEventttttt>? _s;
 
@@ -28,6 +29,7 @@ class MagicRootController extends GetxController{
 
   @override
   void onClose() {
+    closePage=true;
     if(loadMagicEventtttt()){
       _s?.cancel();
       _s=null;

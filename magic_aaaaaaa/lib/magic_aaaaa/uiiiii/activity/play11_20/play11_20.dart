@@ -11,12 +11,12 @@ import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_activity.dart';
 import 'package:magic_root/magic_uuu/music_utils.dart';
 
-class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
+class Play11_20Activity extends MagicRootActivity<Play11_20Controller>{
   @override
   Widget createActivityBgWidget() => MagicImageViewwwww(name: "play_bg",width: double.infinity,height: double.infinity,);
 
   @override
-  Play1_10Controller createMagicRootController() => Play1_10Controller();
+  Play11_20Controller createMagicRootController() => Play11_20Controller();
 
   @override
   Widget createActivityContentWidget() => PlayBaseWidget(
@@ -24,7 +24,7 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
     child: _listWidget(),
   );
 
-  _listWidget()=> GetBuilder<Play1_10Controller>(
+  _listWidget()=> GetBuilder<Play11_20Controller>(
     id: "list",
     builder: (_){
       if(magicRootController.playHep.cardList.isEmpty){
@@ -32,7 +32,7 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
       }
       var list = magicRootController.playHep.cardList;
       return Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -41,27 +41,15 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _cardItemWidget(list.first[0]),
-                  _cardItemWidget(list.first[1]).marginOnly(left: 7.w),
-                  _cardItemWidget(list.first[2]).marginOnly(left: 27.w),
-                  _cardItemWidget(list.first[3]).marginOnly(left: 7.w),
+                  _cardItemWidget(list.first[1]).marginOnly(left: 87.w),
                 ],
               ),
-              SizedBox(height: 16.h,),
+              SizedBox(height: 20.h,),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _cardItemWidget(list.first[4]),
-                  _cardItemWidget(list.first[5]).marginOnly(left: 7.w),
-                  _cardItemWidget(list.first[6]).marginOnly(left: 27.w),
-                  _cardItemWidget(list.first[7]).marginOnly(left: 7.w),
-                ],
-              ),
-              SizedBox(height: 16.h,),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _cardItemWidget(list.first[8]),
-                  _cardItemWidget(list.first[9]).marginOnly(left: 27.w),
+                  _cardItemWidget(list.first[2]),
+                  _cardItemWidget(list.first[3]).marginOnly(left: 87.w),
                 ],
               ),
             ],
@@ -72,14 +60,34 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _cardItemWidget(list.last[0]),
-                  _cardItemWidget(list.last[1]).marginOnly(left: 84.w),
+                  _cardItemWidget(list[1][0]),
+                  _cardItemWidget(list[1][1]).marginOnly(left: 26.w),
                 ],
               ),
-              SizedBox(height: 12.h,),
-              _cardItemWidget(list.last[2]),
+              SizedBox(height: 20.h,),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _cardItemWidget(list[1][2]),
+                  _cardItemWidget(list[1][3]).marginOnly(left: 26.w),
+                ],
+              ),
             ],
-          )
+          ).marginOnly(top: 47.h),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _cardItemWidget(list.last[0]),
+              SizedBox(height: 116.h,),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _cardItemWidget(list.last[1]),
+                  _cardItemWidget(list.last[2]).marginOnly(left: 87.w),
+                ],
+              )
+            ],
+          ),
         ],
       );
     },
@@ -96,7 +104,7 @@ class Play1_10Activity extends MagicRootActivity<Play1_10Controller>{
   );
 }
 
-class Play1_10Controller extends MagicRootController {
+class Play11_20Controller extends MagicRootController {
   PlayHep playHep = PlayHep();
 
   @override
@@ -108,10 +116,10 @@ class Play1_10Controller extends MagicRootController {
   _initList() async{
     List<List<CardBean>> cardList = [];
     var index = 0;
-    while (cardList.length < 2) {
+    while (cardList.length < 3) {
       if (cardList.isEmpty) {
         List<CardBean> list = [];
-        while (list.length < 10) {
+        while (list.length < 4) {
           list.add(CardBean(index: index,
               cardNum: "",
               globalKey: GlobalKey(),
@@ -123,6 +131,19 @@ class Play1_10Controller extends MagicRootController {
         }
         cardList.add(list);
       } else if (cardList.length == 1) {
+        List<CardBean> list = [];
+        while (list.length < 4) {
+          list.add(CardBean(index: index,
+              cardNum: "",
+              globalKey: GlobalKey(),
+              isTop: true,
+              isCovered: true,
+              show: false,
+              cardType: cardTypeList.random()));
+          index++;
+        }
+        cardList.add(list);
+      }else if (cardList.length == 2) {
         List<CardBean> list = [];
         while (list.length < 3) {
           list.add(CardBean(index: index,
@@ -138,27 +159,30 @@ class Play1_10Controller extends MagicRootController {
       }
     }
 
-    MusicUtils.instance.playFapai();
+    // MusicUtils.instance.playFapai();
     playHep.setCardList(list: cardList);
-    for(var index=0;index<5;index++){
+    for(var index=0;index<6;index++){
       if(closePage){
         break;
       }
       switch(index){
         case 0:
-          _setShow(0, 0, 4);
+          _setShow(0, 0, 2);
           break;
         case 1:
-          _setShow(0, 4, 8);
+          _setShow(0, 2, 4);
           break;
         case 2:
-          _setShow(0, 8, 10);
-          break;
-        case 3:
           _setShow(1, 0, 2);
           break;
+        case 3:
+          _setShow(1, 2, 4);
+          break;
         case 4:
-          _setShow(1, 2, 3);
+          _setShow(2, 0, 1);
+          break;
+        case 5:
+          _setShow(2, 1, 3);
           break;
       }
       update(["list"]);
@@ -170,14 +194,6 @@ class Play1_10Controller extends MagicRootController {
         MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startInitHandCards);
       }
     );
-
-    // playHep.setCardList(
-    //     list: cardList,
-    //     checkCoverCall: () {
-    //       update(["list"]);
-    //     }
-    // );
-    // update(["list"]);
   }
 
   _setShow(int listIndex,int startIndex,int endIndex){

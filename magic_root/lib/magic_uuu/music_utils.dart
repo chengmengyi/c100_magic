@@ -74,13 +74,25 @@ class MusicUtils{
 
   playXiaoChu(){
     if(otherMusicOpen.getData()){
-      _voiceAudioPlayer.play(AssetSource("xiaochu.MP3"));
+      _voiceAudioPlayer.play(AssetSource("xiaochu2.MP3"));
+    }
+  }
+
+  playFapai(){
+    // if(otherMusicOpen.getData()){
+    //   _voiceAudioPlayer.play(AssetSource("fapai.MP3"));
+    // }
+  }
+
+  playWanneng(){
+    if(otherMusicOpen.getData()){
+      _voiceAudioPlayer.play(AssetSource("daoju2.MP3"));
     }
   }
 
   playShengLi(){
     if(otherMusicOpen.getData()){
-      _voiceAudioPlayer.play(AssetSource("shengli.MP3"));
+      _voiceAudioPlayer.play(AssetSource("chenggong.MP3"));
     }
   }
 
@@ -95,11 +107,4 @@ class MusicUtils{
       _voiceAudioPlayer.play(AssetSource("feng.MP3"));
     }
   }
-
-  playWanNeng(){
-    if(otherMusicOpen.getData()){
-      _voiceAudioPlayer.play(AssetSource("wanneng.MP3"));
-    }
-  }
-
 }

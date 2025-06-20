@@ -13,6 +13,7 @@ import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_root_stateful_widget.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
+import 'package:magic_root/magic_uuu/music_utils.dart';
 
 class PlayBottomViewwwww extends MagicRootStatefulWidget{
   PlayHep playHep;
@@ -54,7 +55,7 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
           setState(() {
             showHandCard=false;
           });
-          widget.playHep.setPointCard();
+          widget.playHep.setPointCard(reset: true);
         }
       });
 
@@ -63,19 +64,18 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
     });
   }
 
-
   @override
   Widget createMagicStatefulWidget() => Stack(
     children: [
       Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(width: 16.w,),
+          SizedBox(width: 12.w,),
           _handCardWidget(),
           _pointCardWidget(),
           _wannengWidget(),
           _longjuanfengWidget(),
-          SizedBox(width: 16.w,),
+          SizedBox(width: 12.w,),
         ],
       ),
       _handCardAnimatorWidget(),
@@ -134,7 +134,7 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
       _clickHandCard();
     },
     child: SizedBox(
-      width: 67.w,
+      width: 113.w,
       height: 73.h,
       key: handCardGlobalKey,
       child: Stack(
@@ -144,7 +144,7 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
           if(handCardNum<=0){
             return Container();
           }
-          return _handCardItemWidget(handCardNum==index+1).marginOnly(left: index>=4?18.w:(6.w)*index);
+          return _handCardItemWidget(handCardNum==index+1).marginOnly(left: (4.w)*index);
         }),
       ),
     ),
@@ -196,11 +196,7 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
   _clickHandCard(){
     var handCardRenderBox = handCardGlobalKey.currentContext!.findRenderObject() as RenderBox;
     var handCardOffset = handCardRenderBox.localToGlobal(Offset.zero);
-    if(widget.playHep.handCardNum>=4){
-      handCardOffset=Offset(handCardOffset.dx+(18.w), handCardOffset.dy);
-    }else if (widget.playHep.handCardNum>0){
-      handCardOffset=Offset(handCardOffset.dx+((6.w)*(widget.playHep.handCardNum-1)), handCardOffset.dy);
-    }
+    handCardOffset=Offset(handCardOffset.dx+((6.w)*(widget.playHep.handCardNum-1)), handCardOffset.dy);
     var pointRenderBox = pointCardGlobalKey.currentContext!.findRenderObject() as RenderBox;
     var pointOffset = pointRenderBox.localToGlobal(Offset.zero);
     showHandCard=true;
@@ -227,6 +223,7 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
     Get.dialog(
       LongjuanfengDialog(
         hasLongjuanfengCallback: (){
+          MusicUtils.instance.playFeng();
           var result = widget.playHep.cardList.expand((row) => row).where((card) => card.show&&!card.isCovered&&card.cardNum.isNotEmpty).toList();
           MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startLongjuanfengAnimator,dynamicValue: result);
         },
@@ -266,6 +263,9 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
         widget.playHep.hasWanNengCard=true;
         setState(() {});
         break;
+      case MagicCodeAAAAA.startInitHandCards:
+        _initHandCards();
+        break;
     }
   }
 
@@ -289,6 +289,20 @@ class _PlayBottomViewwwwwState extends MagicRootStatefulState<PlayBottomViewwwww
     }
     _isFront = !_isFront;
 
+  }
+
+  _initHandCards()async{
+    MusicUtils.instance.playFapai();
+    for(var index=0;index<17;index++){
+      if(closePage){
+        break;
+      }
+      widget.playHep.addHandsCardNum(1);
+      setState(() {});
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+    setState(() {});
+    _startFlipAnimator();
   }
 
   @override

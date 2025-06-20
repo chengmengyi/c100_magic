@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/storage_a.dart';
 import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
@@ -12,6 +14,9 @@ class CoinsViewwww extends MagicRootStatefulWidget{
 }
 
 class _CoinsViewwwwState extends MagicRootStatefulState<CoinsViewwww>{
+  var coins=aCoinsNum.getData();
+  Timer? _timer;
+
   @override
   Widget createMagicStatefulWidget() => Stack(
     alignment: Alignment.centerLeft,
@@ -28,7 +33,7 @@ class _CoinsViewwwwState extends MagicRootStatefulState<CoinsViewwww>{
               height: 30.h,
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 20.w,top: 5.h),
-              child: MagicTextViewwwww(text: "${aCoinsNum.getData()}", size: 17.sp, color: "#FFEA4A"),
+              child: MagicTextViewwwww(text: "$coins", size: 17.sp, color: "#FFEA4A"),
             )
           ],
         ),
@@ -44,8 +49,33 @@ class _CoinsViewwwwState extends MagicRootStatefulState<CoinsViewwww>{
   handleMagicEventtttttt(MagicEventttttt tttt) {
     switch(tttt.eventCodeeeeee){
       case MagicCodeAAAAA.updateCoins:
-        setState(() {});
+        _updateCoins(tttt.intValue??0);
         break;
     }
+  }
+
+  _updateCoins(int addNum){
+    var total=100,current=0;
+    var d = (addNum/total).toInt();
+    if(null!=_timer){
+      return;
+    }
+    _timer=Timer.periodic(Duration(milliseconds: 10), (time){
+      coins+=d;
+      setState(() {});
+      current++;
+      if(current>=total){
+        _timer?.cancel();
+        _timer=null;
+        coins=aCoinsNum.getData();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer=null;
+    super.dispose();
   }
 }

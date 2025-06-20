@@ -5,6 +5,7 @@ import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 abstract class MagicRootStatefulWidget extends StatefulWidget{}
 
 abstract class MagicRootStatefulState<K extends MagicRootStatefulWidget> extends State<K>{
+  bool closePage=false;
   StreamSubscription<MagicEventttttt>? _s;
 
   @override
@@ -33,6 +34,7 @@ abstract class MagicRootStatefulState<K extends MagicRootStatefulWidget> extends
 
   @override
   void dispose() {
+    closePage=true;
     if(loadMagicEventtttt()){
       _s?.cancel();
       _s=null;

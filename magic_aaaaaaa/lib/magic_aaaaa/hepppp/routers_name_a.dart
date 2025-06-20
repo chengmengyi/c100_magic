@@ -1,4 +1,5 @@
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/activity/home/home.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/activity/play11_20/play11_20.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/activity/play1_10/play1_10.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/activity/web/web_activity.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
@@ -6,6 +7,7 @@ import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 class RoutersNameA{
   static final home="/a/home";
   static final play1_10="/a/play1_10";
+  static final play11_20="/a/play11_20";
   static final web="/a/web";
 }
 
@@ -18,6 +20,11 @@ var aList=[
   GetPage(
     name: RoutersNameA.play1_10,
     page: ()=> Play1_10Activity(),
+    transition: Transition.fadeIn,
+  ),
+  GetPage(
+    name: RoutersNameA.play11_20,
+    page: ()=> Play11_20Activity(),
     transition: Transition.fadeIn,
   ),
   GetPage(

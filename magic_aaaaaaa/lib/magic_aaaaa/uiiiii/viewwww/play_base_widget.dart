@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/play_hep.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/card_move_animator_viewwwww.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/coins_viewwwww.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/get_coins_lottie_widget.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/longjuanfeng_animator_widget.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/play_bottom_viewwwww.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/viewwww/play_level_viewwwww.dart';
@@ -36,6 +37,7 @@ class PlayBaseWidget extends StatelessWidget{
       ),
       CardMoveAnimatorViewwwww(),
       LongjuanfengAnimatorWidget(),
+      GetCoinsLottieWidget(),
     ],
   );
 

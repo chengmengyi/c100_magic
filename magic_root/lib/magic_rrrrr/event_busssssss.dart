@@ -9,6 +9,7 @@ class MagicEventttttt{
 
   MagicEventttttt({
     required this.eventCodeeeeee,
+    this.intValue,
     this.dynamicValue,
   }){
     eventBussssssss.fire(this);
@@ -27,4 +28,6 @@ class MagicCodeAAAAA{
   static const int startCountHandCards=9;
   static const int addWanNengCards=10;
   static const int startLongjuanfengAnimator=11;
+  static const int startInitHandCards=12;
+  static const int showCoinsLottie=13;
 }

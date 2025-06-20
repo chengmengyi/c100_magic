@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/routers_name_a.dart';
 import 'package:magic_peak_solitaire/launchhhh/launch_activity.dart';
+import 'package:magic_root/magic_ad/ad_utils.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_routers_name.dart';
 import 'package:magic_root/magic_rrrrr/webbbb/web_activity.dart';
+import 'package:magic_root/magic_uuu/lifecycle_utils.dart';
 
 void main() async{
   await _setPreferredOrientations();
@@ -30,6 +32,8 @@ _setPreferredOrientations()async{
 
 _init()async{
   await GetStorage.init();
+  AdUtils.instance.initMax();
+  LifecycleUtils.instance.initLifecycle();
 }
 
 class MyApp extends StatelessWidget {

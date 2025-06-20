@@ -4,8 +4,10 @@ import 'package:flutter_ad_ios_plugins/data/ad_info_data.dart';
 import 'package:flutter_ad_ios_plugins/data/config_ad_data.dart';
 import 'package:flutter_ad_ios_plugins/flutter_ios_ad_hep.dart';
 import 'package:flutter_ad_ios_plugins/hep/ad_type.dart';
+import 'package:flutter_ad_ios_plugins/hep/ios_ad_callback.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_uuu/local_config.dart';
+import 'package:magic_root/magic_uuu/music_utils.dart';
 
 class AdUtils{
   static final AdUtils _utils=AdUtils();
@@ -15,8 +17,8 @@ class AdUtils{
     try{
       var json = jsonDecode(localAdStrBase64.base64());
       var data = ConfigAdData(
-        maxShowNum: json["wbpryjrf"],
-        maxClickNum: json["gelxuwdg"],
+        maxShowNum: json["tgfthzsm"],
+        maxClickNum: json["occixuyh"],
         oneRewardList: _getAdList(json["vvslt_arv_one"]),
         oneInterList: [],
         twoRewardList: [],
@@ -31,7 +33,30 @@ class AdUtils{
     required AdType adType,
     required Function() closeAd,
 }){
-    closeAd.call();
+    var resultData = FlutterIosAdHep.instance.getCacheResultData(adType);
+    if(null==resultData){
+      showToast("Advertisement display failed, please try again later");
+      FlutterIosAdHep.instance.loadAd(adType);
+      return;
+    }
+    FlutterIosAdHep.instance.showAd(
+      adType: adType,
+      iosAdCallback: IosAdCallback(
+        showSuccess: (ad,info){
+          MusicUtils.instance.pauseMusic();
+        },
+        showFail: (ad){
+          showToast("Advertisement display failed, please try again later");
+        },
+        closeAd: (){
+          MusicUtils.instance.playMusic();
+          closeAd.call();
+        },
+        onAdRevenuePaidCallback: (ad,info){
+
+        },
+      ),
+    );
   }
 
   List<AdInfoData> _getAdList(List list){
@@ -39,11 +64,11 @@ class AdUtils{
     for (var value in list) {
       resultList.add(
           AdInfoData(
-            adId: value["idirgkyd"],
-            adPlat: value["lurwymeq"],
-            adType: value["ehpdicim"]=="reward"?AdType.reward:AdType.interstitial,
-            expireTime: value["guxxklrg"],
-            sort: value["lugbfdap"],
+            adId: value["ewoekbla"],
+            adPlat: value["nlmtyzvb"],
+            adType: value["vypidicb"]=="reward"?AdType.reward:AdType.interstitial,
+            expireTime: value["ahfrrche"],
+            sort: value["mknotvfz"],
           )
       );
     }

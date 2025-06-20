@@ -8,6 +8,7 @@ import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/play_fail_dialog.dart
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/win_dialog.dart';
 import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
+import 'package:magic_root/magic_uuu/music_utils.dart';
 
 
 //         // Transform.rotate(
@@ -46,7 +47,7 @@ final Map<String, int> cardValue = {
 class PlayHep{
   final List<List<CardBean>> cardList=[];
   //    是否可点击          手牌数量
-  var canClick=false,handCardNum=17,hasWanNengCard=false;
+  var canClick=false,handCardNum=0,hasWanNengCard=false;
   GlobalKey? _pointCardGlobalKey;
   //当前指示牌
   PointCardBean? currentPointCard;
@@ -57,17 +58,26 @@ class PlayHep{
 
   setCardList({
     required List<List<CardBean>> list,
-    required Function() checkCoverCall,
   }){
     cardList.clear();
     cardList.addAll(list);
+  }
+
+  initCardLocation({
+    required Function() checkCoverCall,
+}){
     _initCardNums(cardList.expand((row) => row).where((c) => c.isTop).toList());
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _checkAllCoveredWidgetsAccurate();
-      checkCoverCall.call();
-      _sendFlipTopCardMsg();
-      setPointCard();
-    });
+    _checkAllCoveredWidgetsAccurate();
+    checkCoverCall.call();
+    _sendFlipTopCardMsg();
+    setPointCard();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   print("kk=====initCardLocation}===");
+    //   _checkAllCoveredWidgetsAccurate();
+    //   checkCoverCall.call();
+    //   _sendFlipTopCardMsg();
+    //   setPointCard();
+    // });
   }
 
   useLongJuanFeng({
@@ -108,10 +118,12 @@ class PlayHep{
     }
     if(hasWanNengCard){
       hasWanNengCard=false;
+      MusicUtils.instance.playWanneng();
       _clickResult(bean,refreshList,resetPlay);
       return;
     }
     if(_checkFail()){
+      MusicUtils.instance.playShiBai();
       Get.dialog(
         PlayFailDialog(
           replayCallback: (){
@@ -130,6 +142,7 @@ class PlayHep{
       showToast("Your current hand is ${currentPointCard?.cardNum}, you can only eliminate ${_getCardLastAndNext(currentPointCard?.cardNum??"")}");
       return;
     }
+    MusicUtils.instance.playXiaoChu();
     _clickResult(bean,refreshList,resetPlay);
   }
 
@@ -167,32 +180,29 @@ class PlayHep{
   }
 
   _showWindDialog(Function() resetPlay){
+    var updateLevel = UserInfoHep.instance.updateLevel();
+    MusicUtils.instance.playShengLi();
     Get.dialog(
       WinDialog(
         homeCallback: (){
           Get.back();
         },
         nextCallback: (){
-          _nextPlay(resetPlay);
+          if(updateLevel.isEmpty){
+            _resetPlay(resetPlay);
+          }else{
+            Get.offNamed(updateLevel);
+          }
         },
       ),
       barrierDismissible: false,
     );
   }
 
-  _nextPlay(Function() resetPlay){
-    var updateLevel = UserInfoHep.instance.updateLevel();
-    if(updateLevel.isEmpty){
-      _resetPlay(resetPlay);
-    }else{
-      Get.offNamed(updateLevel);
-    }
-  }
-
   _resetPlay(Function() resetPlay){
     cardList.clear();
     canClick=true;
-    handCardNum=17;
+    handCardNum=0;
     currentPointCard=null;
     MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.resetBottom);
     resetPlay.call();
@@ -297,7 +307,7 @@ class PlayHep{
   }
 
   //设置指示牌
-  setPointCard(){
+  setPointCard({bool reset=false}){
     final noCoveredList = cardList.expand((row) => row).where((c) => !c.isCovered&&c.show&&c.cardNum.isNotEmpty).toList();
     if(noCoveredList.isEmpty){
       return;
@@ -331,7 +341,9 @@ class PlayHep{
 
     final chosen = targetValues.toList()[random.nextInt(targetValues.length)];
     currentPointCard = PointCardBean(cardNum: valueToCardNum(chosen), cardType: cardTypeList.random());
-    MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.updatePointCard,);
+    if(reset){
+      MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.updatePointCard,);
+    }
   }
 
   _initCardNums(List<CardBean> topCards) {

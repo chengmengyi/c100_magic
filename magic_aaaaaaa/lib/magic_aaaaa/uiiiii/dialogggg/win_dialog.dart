@@ -41,7 +41,6 @@ class WinDialog extends MagicRootDialog<WinDialogController>{
             children: [
               MagicImageViewwwww(name: "win2",width: 162.w,height: 85.h,),
               MagicTextViewwwww(text: "+2000", size: 28.sp, color: "#FFEA4A",),
-              MagicTextViewwwww(text: "Equipment effect: +1000", size: 15.sp, color: "#EEE4CB",),
             ],
           ).marginOnly(top: 114.h),
         ),
