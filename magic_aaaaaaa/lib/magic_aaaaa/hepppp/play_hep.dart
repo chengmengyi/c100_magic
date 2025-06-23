@@ -99,12 +99,13 @@ class PlayHep{
     _sendFlipTopCardMsg();
     if(!_checkCardNotEmpty()){
       if(handCardNum>0){
+        var hasHandsNum=handCardNum;
         var timer = handCardNum*400;
         MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startCountHandCards);
         await Future.delayed(Duration(milliseconds: timer));
-        _showWindDialog(resetPlay);
+        _showWindDialog(hasHandsNum,resetPlay);
       }else{
-        _showWindDialog(resetPlay);
+        _showWindDialog(0,resetPlay);
       }
     }
   }
@@ -157,8 +158,8 @@ class PlayHep{
     bean.show=false;
     refreshList.call();
     await Future.delayed(Duration(milliseconds: 300));
+    UserInfoHep.instance.updateCoinsNum(100);
     if(_checkCardNotEmpty()){
-      UserInfoHep.instance.updateCoinsNum(100);
       currentPointCard=PointCardBean(cardNum: bean.cardNum, cardType: bean.cardType);
       MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.endCardMoveAnimator);
       _checkAllCoveredWidgetsAccurate();
@@ -170,21 +171,23 @@ class PlayHep{
       canClick=true;
     }else{
       if(handCardNum>0){
+        var hasHandsNum=handCardNum;
         var timer = handCardNum*400;
         MagicEventttttt(eventCodeeeeee: MagicCodeAAAAA.startCountHandCards);
         await Future.delayed(Duration(milliseconds: timer));
-        _showWindDialog(resetPlay);
+        _showWindDialog(hasHandsNum,resetPlay);
       }else{
-        _showWindDialog(resetPlay);
+        _showWindDialog(0,resetPlay);
       }
     }
   }
 
-  _showWindDialog(Function() resetPlay){
+  _showWindDialog(int hasHandsNum,Function() resetPlay){
     var updateLevel = UserInfoHep.instance.updateLevel();
     MusicUtils.instance.playShengLi();
     Get.dialog(
       WinDialog(
+        handsNum: hasHandsNum,
         homeCallback: (){
           Get.back();
         },

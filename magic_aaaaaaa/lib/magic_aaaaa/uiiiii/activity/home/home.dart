@@ -157,7 +157,8 @@ class HomeController extends MagicRootController{
     }
     // var updateLevel = UserInfoHep.instance.updateLevel();
     // aLevelNum.saveData(1);
-    // UserInfoHep.instance.updateCoinsNum(10000000);
+    // UserInfoHep.instance.updateCoinsNum(100);
+    aCoinsNum.saveData(0);
   }
 
 }

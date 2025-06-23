@@ -21,6 +21,19 @@ class LongjuanfengDialog extends MagicRootDialog<LongJuanFengDialogController>{
   Widget createActivityContentWidget() => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ClickWidget(
+            onTap: (){
+              Get.back();
+            },
+            child: MagicImageViewwwww(name: "icon_close",width: 34.w,height: 34.w,),
+          ),
+          SizedBox(width: 30.w,),
+        ],
+      ),
+      SizedBox(height: 12.h,),
       MagicImageViewwwww(name: "long1",height: 56.h,fit: BoxFit.fitHeight,),
       SizedBox(height: 30.h,),
       Stack(

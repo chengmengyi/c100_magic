@@ -7,9 +7,11 @@ import 'package:magic_root/magic_rrrrr/magic_root_dialog.dart';
 import 'package:magic_root/magic_rrrrr/magic_text_viewwww.dart';
 
 class WinDialog extends MagicRootDialog<WinDialogController>{
+  int handsNum;
   Function() nextCallback;
   Function() homeCallback;
   WinDialog({
+    required this.handsNum,
     required this.nextCallback,
     required this.homeCallback,
 });
@@ -40,7 +42,7 @@ class WinDialog extends MagicRootDialog<WinDialogController>{
             mainAxisSize: MainAxisSize.min,
             children: [
               MagicImageViewwwww(name: "win2",width: 162.w,height: 85.h,),
-              MagicTextViewwwww(text: "+2000", size: 28.sp, color: "#FFEA4A",),
+              MagicTextViewwwww(text: "+${handsNum*100}", size: 28.sp, color: "#FFEA4A",),
             ],
           ).marginOnly(top: 114.h),
         ),
