@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_ad_ios_plugins/data/ad_info_data.dart';
 import 'package:flutter_ad_ios_plugins/data/config_ad_data.dart';
 import 'package:flutter_ad_ios_plugins/flutter_ios_ad_hep.dart';
@@ -33,6 +34,10 @@ class AdUtils{
     required AdType adType,
     required Function() closeAd,
 }){
+    // if(kDebugMode){
+    //   closeAd.call();
+    //   return;
+    // }
     var resultData = FlutterIosAdHep.instance.getCacheResultData(adType);
     if(null==resultData){
       showToast("Advertisement display failed, please try again later");

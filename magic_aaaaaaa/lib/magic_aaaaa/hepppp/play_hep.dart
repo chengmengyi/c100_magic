@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/bean/card_bean.dart';
 import 'package:magic_aaaaaaa/bean/point_card_bean.dart';
+import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/storage_a.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/longjuanfeng_dialog.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/uiiiii/dialogggg/play_fail_dialog.dart';

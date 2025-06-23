@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:magic_aaaaaaa/magic_aaaaa/hepppp/user_info_hep.dart';
+import 'package:magic_root/magic_rrrrr/event_busssssss.dart';
 import 'package:magic_root/magic_rrrrr/magic_gra_text_viewwwwww.dart';
 import 'package:magic_root/magic_rrrrr/magic_hepppp.dart';
 import 'package:magic_root/magic_rrrrr/magic_image_viewwww.dart';
@@ -32,4 +33,16 @@ class _PlayLevelViewwwwwState extends MagicRootStatefulState<PlayLevelViewwwww>{
       ],
     ),
   );
+
+  @override
+  bool loadMagicEventtttt() => true;
+
+  @override
+  handleMagicEventtttttt(MagicEventttttt tttt) {
+    switch(tttt.eventCodeeeeee){
+      case MagicCodeAAAAA.updateLevel:
+        setState(() {});
+        break;
+    }
+  }
 }

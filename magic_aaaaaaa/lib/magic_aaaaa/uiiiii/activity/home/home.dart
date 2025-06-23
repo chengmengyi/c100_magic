@@ -155,7 +155,9 @@ class HomeController extends MagicRootController{
     if(!kDebugMode){
       return;
     }
-    var updateLevel = UserInfoHep.instance.updateLevel();
+    // var updateLevel = UserInfoHep.instance.updateLevel();
+    // aLevelNum.saveData(1);
+    // UserInfoHep.instance.updateCoinsNum(10000000);
   }
 
 }
